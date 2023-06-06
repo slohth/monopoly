@@ -1,0 +1,6 @@
+main: dev.slohth.monopoly.Monopoly
+name: Monopoly
+version: "DEV"
+api-version: 1.19
+author: "Brandon @slohth"
+description: "A modern and engaging take on the classic board game Monopoly"
