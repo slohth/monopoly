@@ -38,7 +38,9 @@ Yes, there is an extensive API for developers to use which means Monopoly can be
 
 Please join my support Discord server and ask for support in the #monopoly-support channel.
 
-**Please do not DM me directly for support regarding my public projects**, I have appropriate channels for all of these and will be no swifter responding to DMs than I do in the support server.
+#### Can I fork this project and make changes for my purposes?
+
+Yes, just please credit me.
 
 
 ## API Usage/Examples
