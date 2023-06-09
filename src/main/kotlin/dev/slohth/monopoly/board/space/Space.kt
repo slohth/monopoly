@@ -23,11 +23,7 @@ abstract class Space(open val board: Board, open val name: String, open val type
     fun onRegionEnter(event: RegionEnterEvent) {
         plugin.profileManager.get(event.player.uniqueId)?.let {
             if (!it.isInGame || it.game!! != board.game) return
-            Bukkit.getScheduler().runTaskLater(Monopoly.INSTANCE!!, Runnable {
-
-                // if is current turn destination
-
-            }, 20)
+            interact(it)
         }
     }
 

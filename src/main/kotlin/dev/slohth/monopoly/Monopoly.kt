@@ -1,5 +1,7 @@
 package dev.slohth.monopoly
 
+import dev.slohth.monopoly.board.Board
+import dev.slohth.monopoly.game.Game
 import dev.slohth.monopoly.profile.manager.ProfileManager
 import dev.slohth.monopoly.utils.CC.color
 import dev.slohth.monopoly.utils.command.Framework
@@ -30,6 +32,8 @@ class Monopoly : JavaPlugin() {
         devTeam.prefix = "&6☕ ".color()
 
         for (command in listOf(TestCommand())) framework.registerCommands(command)
+
+        Board(Game())
     }
 
     companion object {

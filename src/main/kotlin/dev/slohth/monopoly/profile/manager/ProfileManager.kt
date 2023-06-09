@@ -15,6 +15,12 @@ class ProfileManager(private val plugin: Monopoly) : Listener {
 
     private val profiles: MutableMap<UUID, Profile> = HashMap()
 
+    companion object {
+        fun Player.profile(): Profile? {
+            return Monopoly.INSTANCE!!.profileManager.get(this.uniqueId)
+        }
+    }
+
     init {
         Bukkit.getPluginManager().registerEvents(this, plugin)
     }
