@@ -36,7 +36,9 @@ Yes, there is an extensive API for developers to use which means Monopoly can be
 
 #### The plugin isn't working! What can  I do?
 
-Please join my support Discord server and ask for support in the #monopoly-support channel.
+Please join my support Discord server and ask for support in the #monopoly-support channel. 
+
+**Please do not DM me directly for support regarding my public projects**, I have appropriate channels for all of these and will be no swifter responding to DMs than I do in the support server.
 
 #### Can I fork this project and make changes for my purposes?
 
