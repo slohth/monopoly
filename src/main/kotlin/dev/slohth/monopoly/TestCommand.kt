@@ -15,16 +15,9 @@ class TestCommand : ICommand {
         args.sender.sendMessage("Pong!")
     }
 
-    @Command(name = "space", inGameOnly = true)
+    @Command(name = "board", inGameOnly = true)
     fun onSpaceCommand(args: CommandArgs) {
-        val direction = SpaceDirection.valueOf(args.getArgs(0)!!.uppercase())
-        Board(Game()).genSpace(args.getPlayer()!!.location, direction)
-    }
-
-    @Completer(name = "space")
-    fun onSpaceComplete(args: CommandArgs): List<String> {
-        if (args.args.size == 1) return listOf("NORTH", "EAST", "SOUTH", "WEST")
-        return emptyList()
+        Board(Game()).genSpaces(args.getPlayer()!!.location)
     }
 
 }

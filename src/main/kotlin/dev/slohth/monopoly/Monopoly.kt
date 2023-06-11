@@ -34,6 +34,8 @@ class Monopoly : JavaPlugin() {
         for (command in listOf(TestCommand())) framework.registerCommands(command)
 
         Board(Game())
+
+        val version = Bukkit.getServer().bukkitVersion.split("-")[0]
     }
 
     companion object {
