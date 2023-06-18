@@ -7,6 +7,7 @@ import dev.slohth.monopoly.utils.CC.color
 import dev.slohth.monopoly.utils.command.Framework
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.Location
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scoreboard.Scoreboard
 
@@ -33,7 +34,7 @@ class Monopoly : JavaPlugin() {
 
         for (command in listOf(TestCommand())) framework.registerCommands(command)
 
-        Board(Game())
+        Board(Game(), Location(Bukkit.getWorld("world")!!, 142.0, 133.0, -17.0))
 
         val version = Bukkit.getServer().bukkitVersion.split("-")[0]
     }

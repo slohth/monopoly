@@ -18,6 +18,14 @@ class Region {
     private var region: BoundingBox = BoundingBox()
     val id = UUID.randomUUID()
 
+    constructor(location: Location, location2: Location) {
+        setCorners(location, location2)
+    }
+
+    constructor(block: Block, block2: Block) {
+        setCorners(block, block2)
+    }
+
     private val task: BukkitTask = object: BukkitRunnable() {
         override fun run() {
 

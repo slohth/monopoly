@@ -17,7 +17,7 @@ class TestCommand : ICommand {
 
     @Command(name = "board", inGameOnly = true)
     fun onSpaceCommand(args: CommandArgs) {
-        Board(Game()).genSpaces(args.getPlayer()!!.location)
+        //Board(Game()).genSpaces(args.getPlayer()!!.location)
     }
 
 }

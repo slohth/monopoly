@@ -7,8 +7,8 @@ import dev.slohth.monopoly.board.space.SpaceType
 import dev.slohth.monopoly.profile.Profile
 import dev.slohth.monopoly.utils.region.Region
 
-class Property(
-        override val board: Board, override val name: String, override val type: SpaceType, override val region: Region, val cost: Int
+open class Property(
+        override val board: Board, override val name: String, override val type: SpaceType, override val region: Region, open val cost: Int
 ) : Space(board, name, type, region) {
 
     var state = PropertyState.UNCLAIMED

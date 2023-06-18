@@ -1,0 +1,91 @@
+brown:
+  0:
+    name: "Podzol Path"
+    cost: 60
+  1:
+    name: "Dirt Cheap Avenue"
+    cost: 60
+
+light_blue:
+  0:
+    name: "Prismarine Promenade"
+    cost: 100
+  1:
+    name: "Diamond Ditch"
+    cost: 100
+  2:
+    name: "Moonlight Road"
+    cost: 120
+
+pink:
+  0:
+    name: "The Love Garden"
+    cost: 140
+  1:
+    name: "Jen's House"
+    cost: 140
+  2:
+    name: "PVP Park"
+    cost: 160
+
+orange:
+  0:
+    name: "Butter Barrel Beach"
+    cost: 180
+  1:
+    name: "Lovely World"
+    cost: 180
+  2:
+    name: "Slippery Sky Island"
+    cost: 200
+
+red:
+  0:
+    name: "Back in the Mine"
+    cost: 220
+  1:
+    name: "Pesky Birdhouse"
+    cost: 220
+  2:
+    name: "Redstone Support Group"
+    cost: 240
+
+yellow:
+  0:
+    name: "Chicken Chamber"
+    cost: 260
+  1:
+    name: "Sunshine Waterpark"
+    cost: 260
+  2:
+    name: "Third Yellow Space"
+    cost: 280
+
+green:
+  0:
+    name: "Oaktown"
+    cost: 300
+  1:
+    name: "Lush Forest"
+    cost: 300
+  2:
+    name: "Pleasant Park"
+    cost: 320
+
+blue:
+  0:
+    name: "Jean's End"
+    cost: 350
+  1:
+    name: "Digital Pig Farm"
+    cost: 400
+
+railway:
+  0: "Diamond Minecart Railway"
+  1: "The Hermit Express"
+  2: "Lucky Block Junction"
+  3: "Abandoned Mineshaft"
+
+utility:
+  0: "Lantern Market"
+  1: "Waterworks"
