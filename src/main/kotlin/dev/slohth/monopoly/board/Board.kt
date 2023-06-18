@@ -75,7 +75,7 @@ class Board(val game: Game, val location: Location) {
                 val corners = calcOtherCorner(entry.key)
                 val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
 
-                spaces.add(Property(this, name, Region(propertyBL, propertyTR)))
+                spaces.add(Property(this, name, Region(propertyBL, propertyTR), cost))
             }
         }
     }

@@ -28,7 +28,7 @@ This plugin would also not have been possible without help from the lovely folks
 
 #### Are there any dependencies?
 
-No, this plugin is standalone and does not require any external dependencies. Given this, keep in mind that it is *designed* to work standalone and therefore may conflict with other plugins.
+This plugin depends on WorldEdit to generate the board. Keep in mind that it is *designed* to work standalone and therefore may conflict with other plugins.
 
 #### Is there an API for developers to use?
 
