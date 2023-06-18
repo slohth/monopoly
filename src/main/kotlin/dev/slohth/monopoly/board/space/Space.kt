@@ -3,8 +3,8 @@ package dev.slohth.monopoly.board.space
 import dev.slohth.monopoly.Monopoly
 import dev.slohth.monopoly.board.Board
 import dev.slohth.monopoly.board.space.types.property.Property
-import dev.slohth.monopoly.board.space.types.property.railway.Railway
-import dev.slohth.monopoly.board.space.types.property.utility.Utility
+import dev.slohth.monopoly.board.space.types.railway.Railway
+import dev.slohth.monopoly.board.space.types.utility.Utility
 import dev.slohth.monopoly.profile.Profile
 import dev.slohth.monopoly.utils.region.Region
 import dev.slohth.monopoly.utils.region.event.RegionEnterEvent

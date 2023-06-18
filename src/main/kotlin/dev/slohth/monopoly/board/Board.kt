@@ -5,16 +5,13 @@ import dev.slohth.monopoly.board.space.SpaceColor
 import dev.slohth.monopoly.board.space.SpaceDirection
 import dev.slohth.monopoly.board.space.SpaceType
 import dev.slohth.monopoly.board.space.types.property.Property
-import dev.slohth.monopoly.board.space.types.property.railway.Railway
-import dev.slohth.monopoly.board.space.types.property.utility.Utility
+import dev.slohth.monopoly.board.space.types.railway.Railway
+import dev.slohth.monopoly.board.space.types.utility.Utility
 import dev.slohth.monopoly.game.Game
 import dev.slohth.monopoly.utils.Config
 import dev.slohth.monopoly.utils.region.Region
-import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Material
 import java.util.*
-import kotlin.collections.LinkedHashSet
 
 class Board(val game: Game, val location: Location) {
 
@@ -37,7 +34,7 @@ class Board(val game: Game, val location: Location) {
         )
 
         private val RELATIVE_POSITIONS_PROPERTIES_SPECIAL: Map<SpaceType, LinkedHashSet<Pair<Int, Int>>> = hashMapOf(
-                SpaceType.RAILWAY to linkedSetOf(0 to -88, 88 to -65, 165 to -77, 77 to 0),
+                SpaceType.RAILWAY to linkedSetOf(0 to -88, 88 to -165, 165 to -77, 77 to 0),
                 SpaceType.UTILITY to linkedSetOf(49 to -165, 165 to -38)
         )
 
@@ -78,10 +75,7 @@ class Board(val game: Game, val location: Location) {
                 val corners = calcOtherCorner(entry.key)
                 val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
 
-                spaces.add(Property(this, name, SpaceType.PROPERTY, Region(
-                        propertyBL,
-                        propertyTR,
-                ), cost))
+                spaces.add(Property(this, name, Region(propertyBL, propertyTR)))
             }
         }
     }
@@ -100,9 +94,7 @@ class Board(val game: Game, val location: Location) {
             })
             val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
 
-            spaces.add(Railway(this, name, Region(
-                    propertyBL,propertyTR
-            )))
+            spaces.add(Railway(this, name, Region(propertyBL, propertyTR)))
         }
 
         for (utility in RELATIVE_POSITIONS_PROPERTIES_SPECIAL[SpaceType.UTILITY]!!.withIndex()) {
@@ -116,9 +108,7 @@ class Board(val game: Game, val location: Location) {
             })
             val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
 
-            spaces.add(Utility(this, name, Region(
-                    propertyBL, propertyTR
-            )))
+            spaces.add(Utility(this, name, Region(propertyBL, propertyTR)))
         }
     }
 
