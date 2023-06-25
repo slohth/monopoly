@@ -1,4 +1,4 @@
-package dev.slohth.monopoly.board.space.types.railway
+package dev.slohth.monopoly.board.space.types.special
 
 import dev.slohth.monopoly.board.Board
 import dev.slohth.monopoly.board.space.Space

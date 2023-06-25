@@ -1,21 +1,28 @@
 package dev.slohth.monopoly.board
 
+import com.google.common.collect.BiMap
+import com.google.common.collect.HashBiMap
 import dev.slohth.monopoly.board.space.Space
 import dev.slohth.monopoly.board.space.SpaceColor
 import dev.slohth.monopoly.board.space.SpaceDirection
 import dev.slohth.monopoly.board.space.SpaceType
+import dev.slohth.monopoly.board.space.types.action.Chance
+import dev.slohth.monopoly.board.space.types.action.Chest
+import dev.slohth.monopoly.board.space.types.action.Tax
+import dev.slohth.monopoly.board.space.types.corner.*
 import dev.slohth.monopoly.board.space.types.property.Property
-import dev.slohth.monopoly.board.space.types.railway.Railway
-import dev.slohth.monopoly.board.space.types.utility.Utility
+import dev.slohth.monopoly.board.space.types.special.Railway
+import dev.slohth.monopoly.board.space.types.special.Utility
 import dev.slohth.monopoly.game.Game
 import dev.slohth.monopoly.utils.Config
 import dev.slohth.monopoly.utils.region.Region
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import java.util.*
 
 class Board(val game: Game, val location: Location) {
 
-    private val spaces: MutableList<Space> = LinkedList()
+    private val spaces: BiMap<String, Space> = HashBiMap.create()
 
     companion object {
         /*
@@ -53,6 +60,18 @@ class Board(val game: Game, val location: Location) {
                 SpaceType.FREE_PARKING to ((142 to -165) to (165 to -142))
         )
 
+        private val BOARD_ORDER: LinkedList<String> = LinkedList()
+
+        init {
+            BOARD_ORDER.addAll(listOf(
+                    "GO", "BROWN-0", "CHEST-0", "BROWN-1", "TAX-0", "RAILWAY-0", "LIGHT_BLUE-0", "CHANCE-0", "LIGHT_BLUE-1",
+                    "LIGHT_BLUE-2", "VISITING_JAIL", "PINK-0", "UTILITY-0", "PINK-1", "PINK-2", "RAILWAY-1", "ORANGE-0",
+                    "CHEST-1", "ORANGE-1", "ORANGE-2", "FREE_PARKING", "RED-0", "CHANCE-1", "RED-1", "RED-2", "RAILWAY-2",
+                    "YELLOW-0", "YELLOW-1", "UTILITY-1", "YELLOW-2", "GO_TO_JAIL", "GREEN-0", "GREEN-1", "CHEST-2", "GREEN-2",
+                    "RAILWAY-3", "CHANCE-2", "BLUE-0", "TAX-1", "BLUE-1"
+            ))
+        }
+
         fun LinkedHashSet<Any>.indexOf(item: Any): Int {
             return ArrayList(this).indexOf(item)
         }
@@ -61,12 +80,15 @@ class Board(val game: Game, val location: Location) {
     init {
         genProperties()
         genSpecialProperties()
+        genActionProperties()
+        genCorners()
     }
 
     private fun genProperties() {
         for (entry in RELATIVE_POSITIONS_PROPERTIES.entries) {
             for (property in entry.value) {
-                val path = "${entry.key.toString().lowercase()}.${entry.value.indexOf(property)}"
+                val index = entry.value.indexOf(property)
+                val path = "${entry.key.toString().lowercase()}.$index"
 
                 val name = Config.PROPERTIES.getString("$path.name") ?: "null"
                 val cost = Config.PROPERTIES.getInteger("$path.cost")
@@ -75,7 +97,7 @@ class Board(val game: Game, val location: Location) {
                 val corners = calcOtherCorner(entry.key)
                 val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
 
-                spaces.add(Property(this, name, Region(propertyBL, propertyTR), cost))
+                spaces["${entry.key}-$index"] = Property(this, name, entry.key, Region(propertyBL, propertyTR), cost)
             }
         }
     }
@@ -94,7 +116,7 @@ class Board(val game: Game, val location: Location) {
             })
             val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
 
-            spaces.add(Railway(this, name, Region(propertyBL, propertyTR)))
+            spaces["RAILWAY-${railway.index}"] = Railway(this, name, Region(propertyBL, propertyTR))
         }
 
         for (utility in RELATIVE_POSITIONS_PROPERTIES_SPECIAL[SpaceType.UTILITY]!!.withIndex()) {
@@ -108,7 +130,65 @@ class Board(val game: Game, val location: Location) {
             })
             val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
 
-            spaces.add(Utility(this, name, Region(propertyBL, propertyTR)))
+            spaces["UTILITY-${utility.index}"] = Utility(this, name, Region(propertyBL, propertyTR))
+        }
+    }
+
+    private fun genActionProperties() {
+        for (chest in RELATIVE_POSITIONS_ACTION[SpaceType.CHEST]!!.withIndex()) {
+            val propertyBL = location.block.getRelative(chest.value.first, 0, chest.value.second)
+            val corners = getBLtoTR(when (chest.index) {
+                0 -> SpaceDirection.EAST
+                1 -> SpaceDirection.SOUTH
+                2 -> SpaceDirection.NORTH
+                else -> continue
+            })
+            val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
+            spaces["CHEST-${chest.index}"] = Chest(this, Region(propertyBL, propertyTR))
+        }
+
+        for (chance in RELATIVE_POSITIONS_ACTION[SpaceType.CHANCE]!!.withIndex()) {
+            val propertyBL = location.block.getRelative(chance.value.first, 0, chance.value.second)
+            val corners = getBLtoTR(when (chance.index) {
+                0 -> SpaceDirection.EAST
+                1 -> SpaceDirection.WEST
+                2 -> SpaceDirection.NORTH
+                else -> continue
+            })
+            val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
+            spaces["CHANCE-${chance.index}"] = Chance(this, Region(propertyBL, propertyTR))
+        }
+
+        for (tax in RELATIVE_POSITIONS_ACTION[SpaceType.TAX]!!.withIndex()) {
+            val propertyBL = location.block.getRelative(tax.value.first, 0, tax.value.second)
+            val corners = getBLtoTR(when (tax.index) {
+                0 -> SpaceDirection.EAST
+                1 -> SpaceDirection.NORTH
+                else -> continue
+            })
+            val propertyTR = propertyBL.getRelative(corners.first, 10, corners.second)
+            spaces["TAX-${tax.index}"] = Tax(this, Region(propertyBL, propertyTR))
+        }
+    }
+
+    private fun genCorners() {
+        for (entry in RELATIVE_POSITIONS_CORNERS) {
+            val regionBL = location.block.getRelative(entry.value.first.first, 0, entry.value.first.second)
+            val regionTR = location.block.getRelative(entry.value.second.first, 10, entry.value.second.second)
+            val region = Region(regionBL, regionTR)
+
+            Bukkit.getLogger().info("${entry.key} : ${regionBL.location.blockX}, " +
+                    "${regionBL.location.blockY}, ${regionBL.location.blockZ} to " +
+                    "${regionTR.location.blockX}, ${regionTR.location.blockY}, ${regionTR.location.blockZ}")
+
+            spaces[entry.key.toString()] = when (entry.key) {
+                SpaceType.GO -> Go(this, region)
+                SpaceType.VISITING_JAIL -> Visiting(this, region)
+                SpaceType.JAIL -> Jail(this, region)
+                SpaceType.FREE_PARKING -> FreeParking(this, region)
+                SpaceType.GO_TO_JAIL -> GoToJail(this, region)
+                else -> continue
+            }
         }
     }
 
@@ -128,6 +208,10 @@ class Board(val game: Game, val location: Location) {
             SpaceDirection.SOUTH -> Pair(-11, 23)
             SpaceDirection.WEST -> Pair(-23, -11)
         }
+    }
+
+    fun spaceIndex(space: Space): Int {
+        return BOARD_ORDER.indexOf(spaces.inverse()[space])
     }
 
 }
